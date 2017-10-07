@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -16,6 +18,9 @@ import java.util.Random;
 
 class GameView extends SurfaceView implements Runnable {
 
+
+    private SoundPool sounds;
+    private int sExplosion;
     private static final int ENEMY_AMOUNT = 10;
     private GameThread mThread;
     private boolean running = false;
@@ -67,6 +72,10 @@ class GameView extends SurfaceView implements Runnable {
         for (int i = 0; i < ENEMY_AMOUNT; i++) {
             enemy.add(new Enemy(this, enemies));
         }
+        sounds = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        sExplosion = sounds.load(context, R.raw.bubble_explosion, 1);
+
+
     }
 
     @Override
@@ -171,6 +180,7 @@ class GameView extends SurfaceView implements Runnable {
                 Enemy enemies = i.next();
 
                 if ((Math.abs(balls.x - enemies.x) <= (balls.width + enemies.width) / 2f) && (Math.abs(balls.y - enemies.y) <= (balls.height + enemies.height))) {
+                    sounds.play(sExplosion, 1.0f, 1.0f, 0, 0, 1.5f);
                     i.remove();
                     b.remove();
                 }

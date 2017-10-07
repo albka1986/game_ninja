@@ -18,7 +18,6 @@ import java.util.Random;
 
 class GameView extends SurfaceView implements Runnable {
 
-
     private SoundPool sounds;
     private int sExplosion;
     private static final int ENEMY_AMOUNT = 10;
@@ -74,8 +73,6 @@ class GameView extends SurfaceView implements Runnable {
         }
         sounds = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
         sExplosion = sounds.load(context, R.raw.bubble_explosion, 1);
-
-
     }
 
     @Override
@@ -150,7 +147,6 @@ class GameView extends SurfaceView implements Runnable {
             }
         }
 
-
         canvas.drawBitmap(player.bmp, 5, 120, null);
     }
 
@@ -187,6 +183,4 @@ class GameView extends SurfaceView implements Runnable {
             }
         }
     }
-
-
 }

@@ -37,5 +37,4 @@ public class Enemy {
         c.drawBitmap(bmp, x, y, null);
     }
 
-
 }

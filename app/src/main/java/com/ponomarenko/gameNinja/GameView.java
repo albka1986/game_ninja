@@ -16,7 +16,7 @@ import java.util.Random;
 
 class GameView extends SurfaceView implements Runnable {
 
-    private static final int ENEMY_AMOUNT = 50;
+    private static final int ENEMY_AMOUNT = 200;
     private GameThread mThread;
     private boolean running = false;
     private List<Bullet> ball = new ArrayList<>();
@@ -104,6 +104,7 @@ class GameView extends SurfaceView implements Runnable {
                     canvas = view.getHolder().lockCanvas();
                     synchronized (view.getHolder()) {
                         onDraw(canvas);
+                        testCollision();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -159,6 +160,22 @@ class GameView extends SurfaceView implements Runnable {
         }
 
         return true;
+    }
+
+    private void testCollision() {
+        Iterator<Bullet> b = ball.iterator();
+        while (b.hasNext()) {
+            Bullet balls = b.next();
+            Iterator<Enemy> i = enemy.iterator();
+            while (i.hasNext()) {
+                Enemy enemies = i.next();
+
+                if ((Math.abs(balls.x - enemies.x) <= (balls.width + enemies.width) / 2f) && (Math.abs(balls.y - enemies.y) <= (balls.height + enemies.height))) {
+                    i.remove();
+                    b.remove();
+                }
+            }
+        }
     }
 
 

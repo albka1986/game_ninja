@@ -28,6 +28,7 @@ public class Enemy {
         this.height = 8; // height of an enemy
     }
 
+
     public void update() {
         x -= speed;
     }

@@ -16,7 +16,7 @@ import java.util.Random;
 
 class GameView extends SurfaceView implements Runnable {
 
-    private static final int ENEMY_AMOUNT = 200;
+    private static final int ENEMY_AMOUNT = 10;
     private GameThread mThread;
     private boolean running = false;
     private List<Bullet> ball = new ArrayList<>();

@@ -62,6 +62,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.exitBtn:
+                stopService(new Intent(this, MusicService.class));
                 finish();
                 break;
 

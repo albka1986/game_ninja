@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 
 public class MusicService extends Service {
 
-    public static final String TAG = "MusicService";
     MediaPlayer player;
 
 
@@ -22,8 +21,9 @@ public class MusicService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        player = MediaPlayer.create(this, R.raw.loboda);
+        player = MediaPlayer.create(this, R.raw.background_music);
         player.setLooping(true);
+        player.setVolume(0.15f, 0.15f);
     }
 
     @Override

@@ -1,38 +1,83 @@
 package com.ponomarenko.gameNinja;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 public class Bullet {
 
-    private Bitmap bmp;
-
     //position
-    public int x, y;
+    private int x, y;
 
+    private Bitmap bulletImage;
 
     //speed by X
     private int mSpeed = 25;
 
-    public double angle;
+    private double angle;
 
-    public int width;
+    private int width, height;
 
-    public int height;
 
-    public GameView gameView;
-
-    public Bullet(GameView gameView, Bitmap bmp) {
-        this.gameView = gameView;
-        this.bmp = bmp;
+    public Bullet(Context context, GameView gameView) {
+        this.bulletImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet);
 
         this.x = 0; // position by X
         this.y = 120; // position by Y
-        this.height = 27; //height of this object
-        this.width = 40; // width of this project
+        this.height = 27;
+        this.width = 40;
 
         //угол полета пули в зависипости от координаты косания к экрану
         angle = Math.atan((double) (y - gameView.shotY) / (x - gameView.shotX));
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getmSpeed() {
+        return mSpeed;
+    }
+
+    public void setmSpeed(int mSpeed) {
+        this.mSpeed = mSpeed;
+    }
+
+    public double getAngle() {
+        return angle;
+    }
+
+    public void setAngle(double angle) {
+        this.angle = angle;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     private void update() {
@@ -42,7 +87,7 @@ public class Bullet {
 
     public void onDraw(Canvas canvas) {
         update();
-        canvas.drawBitmap(bmp, x, y, null);
+        canvas.drawBitmap(bulletImage, getX(), getY(), null);
     }
 
 }

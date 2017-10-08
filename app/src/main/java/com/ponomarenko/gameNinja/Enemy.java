@@ -14,11 +14,9 @@ public class Enemy {
 
     private int width, height;
 
-    private GameView gameView;
     private Bitmap enemyImage;
 
     public Enemy(Context context, GameView gameView) {
-        this.gameView = gameView;
         this.enemyImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.ball);
 
         Random rnd = new Random();
@@ -42,32 +40,13 @@ public class Enemy {
         return y;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
 
     public int getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
     public int getHeight() {
         return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 
     private void update() {

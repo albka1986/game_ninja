@@ -71,7 +71,6 @@ class GameView extends SurfaceView implements Runnable {
         });
 
         player = new Player(context, this);
-//        enemyImage = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
         for (int i = 0; i < ENEMY_AMOUNT; i++) {
             enemies.add(new Enemy(context, this));
         }
@@ -134,18 +133,16 @@ class GameView extends SurfaceView implements Runnable {
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
-
         Bitmap background = BitmapFactory.decodeResource(getResources(), R.drawable.background_image_game);
         Bitmap scaled = Bitmap.createScaledBitmap(background, Utilities.getWidthPx(getContext()), Utilities.getHeightPx(getContext()), true);
 
         canvas.drawBitmap(scaled, 0, 0, null);
-//        canvas.drawColor(Color.WHITE);
 
         Iterator<Bullet> j = bullets.iterator();
         while (j.hasNext()) {
-            Bullet b = j.next();
-            if (b.x >= 1000 || b.x <= 1000) {
-                b.onDraw(canvas);
+            Bullet bullet = j.next();
+            if (bullet.getX() >= 1000 || bullet.getX() <= 1000) {
+                bullet.onDraw(canvas);
             } else {
                 j.remove();
             }
@@ -166,7 +163,7 @@ class GameView extends SurfaceView implements Runnable {
 
     public Bullet createSpirit(int resource) {
         Bitmap bmp = BitmapFactory.decodeResource(getResources(), resource);
-        return new Bullet(this, bmp);
+        return new Bullet(getContext(), this);
     }
 
     @Override
@@ -189,7 +186,7 @@ class GameView extends SurfaceView implements Runnable {
             while (i.hasNext()) {
                 Enemy enemy = i.next();
 
-                if ((Math.abs(bullet.x - enemy.getX()) <= (bullet.width + enemy.getWidth()) / 2f) && (Math.abs(bullet.y - enemy.getY()) <= (bullet.height + enemy.getHeight()))) {
+                if ((Math.abs(bullet.getX() - enemy.getX()) <= (bullet.getWidth() + enemy.getWidth()) / 2f) && (Math.abs(bullet.getY() - enemy.getY()) <= (bullet.getHeight() + enemy.getHeight()))) {
                     sounds.play(sExplosion, 1.0f, 1.0f, 0, 0, 1.5f);
                     i.remove();
                     bullets.remove();

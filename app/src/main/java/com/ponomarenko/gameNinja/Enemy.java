@@ -23,6 +23,8 @@ public class Enemy {
     private double startDirectionAngle;
     private double currentAngle;
     private GameView gameView;
+    private int previousPositionX;
+    private int previousPositionY;
 
 
     public Enemy(Context context, GameView gameView) {
@@ -68,13 +70,28 @@ public class Enemy {
 
     private void update() {
 
+
         if (x <= 0 || x >= gameView.getWidth() - width) {
+
+            if (x <= 0) {
+                x = 0;
+            } else {
+                x = gameView.getWidth() - width;
+            }
+
             currentAngle = reflectVertical(currentAngle);
             x += mSpeed * Math.cos(currentAngle);
             y += mSpeed * Math.sin(currentAngle);
             Log.e("Test", "vertical reflect: " + currentAngle);
 
         } else if (y <= 0 || y >= gameView.getHeight() - height) {
+
+            if (y <= 0) {
+                y = 0;
+            } else {
+                y = gameView.getHeight() - height;
+            }
+
             currentAngle = reflectHorizontal(currentAngle);
             x += mSpeed * Math.cos(currentAngle);
             y += mSpeed * Math.sin(currentAngle);
@@ -84,6 +101,9 @@ public class Enemy {
             x += mSpeed * Math.cos(currentAngle);
             y += mSpeed * Math.sin(currentAngle);
         }
+
+        previousPositionX = x;
+        previousPositionY = y;
 
     }
 

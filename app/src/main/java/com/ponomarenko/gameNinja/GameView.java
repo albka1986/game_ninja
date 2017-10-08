@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
@@ -33,7 +32,6 @@ class GameView extends SurfaceView implements Runnable {
     private boolean running = false;
     private List<Bullet> bullets = new ArrayList<>();
     private Player player;
-    Bitmap playerImage;
     public int shotY;
     public int shotX;
 
@@ -73,9 +71,8 @@ class GameView extends SurfaceView implements Runnable {
             }
         });
 
-        playerImage = BitmapFactory.decodeResource(getResources(), R.drawable.ninja);
-        player = new Player(context, this, playerImage);
-        enemyImage = BitmapFactory.decodeResource(getResources(), R.drawable.ghost);
+        player = new Player(context, this);
+        enemyImage = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
         for (int i = 0; i < ENEMY_AMOUNT; i++) {
             enemies.add(new Enemy(context, this, enemyImage));
         }
@@ -137,7 +134,13 @@ class GameView extends SurfaceView implements Runnable {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        canvas.drawColor(Color.WHITE);
+
+
+        Bitmap background = BitmapFactory.decodeResource(getResources(), R.drawable.background_image_game);
+        Bitmap scaled = Bitmap.createScaledBitmap(background, Utilities.getWidthPx(getContext()), Utilities.getHeightPx(getContext()), true);
+
+        canvas.drawBitmap(scaled, 0, 0, null);
+//        canvas.drawColor(Color.WHITE);
 
         Iterator<Bullet> j = bullets.iterator();
         while (j.hasNext()) {
@@ -159,7 +162,7 @@ class GameView extends SurfaceView implements Runnable {
             }
         }
 
-        canvas.drawBitmap(player.getBmp(), player.getX(), player.getY(), null);
+        canvas.drawBitmap(player.getPlayerImage(), player.getX(), player.getY(), null);
     }
 
     public Bullet createSpirit(int resource) {

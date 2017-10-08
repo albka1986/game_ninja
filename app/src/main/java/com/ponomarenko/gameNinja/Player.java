@@ -2,23 +2,29 @@ package com.ponomarenko.gameNinja;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 public class Player {
 
+    private Bitmap playerImage;
     private GameView gameView;
-
-    private Bitmap bmp;
-
     private int x;
     private int y;
 
-    public Player(Context context, GameView gameView, Bitmap bmp) {
+    public Player(Context context, GameView gameView) {
         this.gameView = gameView;
-        this.bmp = bmp;
-
+        playerImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.shooter);
         this.x = (int) (Utilities.getWidthPx(context) * 0.03);
         this.y = Utilities.getHeightPx(context) / 2;
+    }
+
+    public Bitmap getPlayerImage() {
+        return playerImage;
+    }
+
+    public void setPlayerImage(Bitmap playerImage) {
+        this.playerImage = playerImage;
     }
 
     public GameView getGameView() {
@@ -27,14 +33,6 @@ public class Player {
 
     public void setGameView(GameView gameView) {
         this.gameView = gameView;
-    }
-
-    public Bitmap getBmp() {
-        return bmp;
-    }
-
-    public void setBmp(Bitmap bmp) {
-        this.bmp = bmp;
     }
 
     public int getX() {
@@ -54,7 +52,7 @@ public class Player {
     }
 
     public void onDraw(Canvas c) {
-        c.drawBitmap(bmp, x, y, null);
+        c.drawBitmap(playerImage, x, y, null);
     }
 
 

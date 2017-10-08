@@ -14,7 +14,7 @@ public class Enemy {
 
     private int width, height;
 
-    public GameView gameView;
+    private GameView gameView;
     private Bitmap enemyImage;
 
     public Enemy(Context context, GameView gameView) {
@@ -26,7 +26,7 @@ public class Enemy {
         this.y = rnd.nextInt((int) (Utilities.getHeightPx(context) * 0.8));
         this.speed = rnd.nextInt(10) + 1;
 
-        this.width = 9; // width of an enemy
+        this.width = 8; // width of an enemy
         this.height = 8; // height of an enemy
     }
 

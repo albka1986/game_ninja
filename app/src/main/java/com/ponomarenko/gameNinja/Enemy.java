@@ -2,23 +2,25 @@ package com.ponomarenko.gameNinja;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 import java.util.Random;
 
 public class Enemy {
 
-    public int x, y;
-    public int speed;
+    int x, y;
+    private int speed;
 
-    public int width, height;
+    private int width, height;
 
-    public GameView gameView;
-    public Bitmap bmp;
+    private GameView gameView;
+    private Bitmap bmp;
+    private Bitmap enemyImage;
 
-    public Enemy(Context context, GameView gameView, Bitmap bmp) {
+    public Enemy(Context context, GameView gameView) {
         this.gameView = gameView;
-        this.bmp = bmp;
+        this.enemyImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.ball);
 
         Random rnd = new Random();
         this.x = Utilities.getWidthPx(context) + 100;
@@ -29,11 +31,75 @@ public class Enemy {
         this.height = 8; // height of an enemy
     }
 
-    public void update() {
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public GameView getGameView() {
+        return gameView;
+    }
+
+    public void setGameView(GameView gameView) {
+        this.gameView = gameView;
+    }
+
+    public Bitmap getBmp() {
+        return bmp;
+    }
+
+    public void setBmp(Bitmap bmp) {
+        this.bmp = bmp;
+    }
+
+    public Bitmap getEnemyImage() {
+        return enemyImage;
+    }
+
+    public void setEnemyImage(Bitmap enemyImage) {
+        this.enemyImage = enemyImage;
+    }
+
+    private void update() {
         x -= speed;
     }
 
-    public void onDraw(Canvas c) {
+    void onDraw(Canvas c) {
         update();
         c.drawBitmap(bmp, x, y, null);
     }

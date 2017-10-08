@@ -72,9 +72,8 @@ class GameView extends SurfaceView implements Runnable {
         });
 
         player = new Player(context, this);
-        enemyImage = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
         for (int i = 0; i < ENEMY_AMOUNT; i++) {
-            enemies.add(new Enemy(context, this, enemyImage));
+            enemies.add(new Enemy(context, this));
         }
         sounds = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
         sExplosion = sounds.load(context, R.raw.bubble_explosion, 1);
@@ -87,7 +86,7 @@ class GameView extends SurfaceView implements Runnable {
             Random rnd = new Random();
             try {
                 thread.sleep(rnd.nextInt(2000));
-                enemies.add(new Enemy(getContext(), this, enemyImage));
+                enemies.add(new Enemy(getContext(), this));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -116,9 +115,6 @@ class GameView extends SurfaceView implements Runnable {
                     synchronized (view.getHolder()) {
                         draw(canvas);
                         testCollision();
-                        if (enemies.size() == 0) {
-                            Log.e("Test", "run: ");
-                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -193,7 +189,7 @@ class GameView extends SurfaceView implements Runnable {
             while (i.hasNext()) {
                 Enemy enemy = i.next();
 
-                if ((Math.abs(bullet.x - enemy.x) <= (bullet.width + enemy.width) / 2f) && (Math.abs(bullet.y - enemy.y) <= (bullet.height + enemy.height))) {
+                if ((Math.abs(bullet.x - enemy.x) <= (bullet.width + enemy.getWidth()) / 2f) && (Math.abs(bullet.y - enemy.y) <= (bullet.height + enemy.getHeight()))) {
                     sounds.play(sExplosion, 1.0f, 1.0f, 0, 0, 1.5f);
                     i.remove();
                     bullets.remove();

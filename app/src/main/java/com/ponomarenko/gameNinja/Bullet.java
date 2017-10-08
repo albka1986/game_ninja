@@ -21,7 +21,7 @@ public class Bullet {
 
 
     public Bullet(Context context, GameView gameView, Player player) {
-        this.bulletImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet);
+        this.bulletImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet_circle);
 
         this.x = player.getX() + player.getPlayerImage().getWidth(); // position by X
         this.y = player.getY(); // position by Y

@@ -20,11 +20,12 @@ public class Bullet {
     private int width, height;
 
 
-    public Bullet(Context context, GameView gameView) {
+    public Bullet(Context context, GameView gameView, Player player) {
         this.bulletImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet);
 
-        this.x = 0; // position by X
-        this.y = 120; // position by Y
+        this.x = player.getX() + player.getPlayerImage().getWidth(); // position by X
+        this.y = player.getY(); // position by Y
+
         this.height = 27;
         this.width = 40;
 

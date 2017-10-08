@@ -37,6 +37,7 @@ class GameView extends SurfaceView implements Runnable {
 
     private List<Enemy> enemies = new ArrayList<>();
     private Thread thread = new Thread(this);
+    private int sShooting;
 
 
     public GameView(Context context) {
@@ -76,6 +77,7 @@ class GameView extends SurfaceView implements Runnable {
         }
         sounds = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
         sExplosion = sounds.load(context, R.raw.bubble_explosion, 1);
+        sShooting = sounds.load(context, R.raw.sound_rifle_shoot, 1);
     }
 
     @Override
@@ -165,8 +167,17 @@ class GameView extends SurfaceView implements Runnable {
         return new Bullet(getContext(), this, player);
     }
 
+
     @Override
     public boolean onTouchEvent(MotionEvent e) {
+
+        new Handler().post(new Runnable() {
+            public void run() {
+                sounds.play(sShooting, 1.0f, 1.0f, 0, 0, 1.5f);
+            }
+        });
+
+
         shotX = (int) e.getX();
         shotY = (int) e.getY();
 
@@ -174,7 +185,7 @@ class GameView extends SurfaceView implements Runnable {
             bullets.add(createSpirit(player));
         }
 
-        return true;
+        return false;
     }
 
     private void testCollision() {

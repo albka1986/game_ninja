@@ -23,8 +23,6 @@ public class Enemy {
     private double startDirectionAngle;
     private double currentAngle;
     private GameView gameView;
-    private int previousPositionX;
-    private int previousPositionY;
 
 
     public Enemy(Context context, GameView gameView) {
@@ -101,10 +99,6 @@ public class Enemy {
             x += mSpeed * Math.cos(currentAngle);
             y += mSpeed * Math.sin(currentAngle);
         }
-
-        previousPositionX = x;
-        previousPositionY = y;
-
     }
 
 
@@ -114,7 +108,7 @@ public class Enemy {
     }
 
     /**
-     * Отражение мячика от вертикали
+     * Reflecting on horizontal bound
      */
     private double reflectVertical(double angle) {
         if (angle > 0 && angle < PI)

@@ -15,8 +15,8 @@ public class Player {
     public Player(Context context, GameView gameView) {
         this.gameView = gameView;
         playerImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.shooter);
-        this.x = (int) (Utilities.getWidthPx(context) * 0.03);
-        this.y = Utilities.getHeightPx(context) / 2;
+        this.x = (Utilities.getWidthPx(context) - getPlayerImage().getWidth()) / 2;
+        this.y = (int) ((Utilities.getHeightPx(context) - playerImage.getHeight()) * 0.95);
     }
 
     public Bitmap getPlayerImage() {

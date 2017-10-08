@@ -27,7 +27,7 @@ class GameView extends SurfaceView implements Runnable {
     private static final long DELAY_TIME = 2500;
     private SoundPool sounds;
     private int sExplosion;
-    private static final int ENEMY_AMOUNT = 10;
+    private static final int ENEMY_AMOUNT = 1;
     private GameThread mThread;
     private boolean running = false;
     private List<Bullet> bullets = new ArrayList<>();

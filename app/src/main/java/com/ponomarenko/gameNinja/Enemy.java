@@ -4,28 +4,45 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import java.util.Random;
+
+import static com.ponomarenko.gameNinja.core.MyApplication.screenHeightPx;
+import static com.ponomarenko.gameNinja.core.MyApplication.screenWidthPx;
+import static java.lang.Math.PI;
 
 public class Enemy {
 
     private int x, y; // position at x and y coordinates
-    private int speed;
+    private int mSpeed;
+    private Context context;
 
     private int width, height;
-
     private Bitmap enemyImage;
+    private double startDirectionAngle;
+    private double currentAngle;
+    private GameView gameView;
+
 
     public Enemy(Context context, GameView gameView) {
         this.enemyImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.ball);
-
+        this.gameView = gameView;
         Random rnd = new Random();
-        this.x = Utilities.getWidthPx(context) + 100;
-        this.y = rnd.nextInt((int) (Utilities.getHeightPx(context) * 0.8));
-        this.speed = rnd.nextInt(10) + 1;
+        this.context = context;
+        this.x = (int) (rnd.nextInt((int) (screenWidthPx * 0.4)) + screenWidthPx * 0.3);
+        this.y = (int) (rnd.nextInt((int) (screenHeightPx * 0.4)) + screenHeightPx * 0.3);
 
-        this.width = 8; // width of an enemy
-        this.height = 8; // height of an enemy
+        this.mSpeed = rnd.nextInt(10) + 3;
+
+        this.width = enemyImage.getWidth(); // for accuracy
+        this.height = enemyImage.getHeight(); // for accuracy
+
+        //random startDirectionAngle of start direction
+        this.startDirectionAngle = 45;
+//        this.startDirectionAngle = rnd.nextInt(90) + 90;
+        Log.e("Test", "Enemy.startDirectionAngle: " + startDirectionAngle);
+        currentAngle = this.startDirectionAngle;
     }
 
     public int getX() {
@@ -50,12 +67,56 @@ public class Enemy {
     }
 
     private void update() {
-        setX(x - speed);
+
+        int heightDp = Utilities.getHeightDp(context);
+        int heightPx = Utilities.getHeightPx(context);
+        int widthDp = Utilities.getWidthDp(context);
+        int widthPx = Utilities.getWidthPx(context);
+
+
+        if (x <= 0 || x >= gameView.getWidth() - width) {
+            currentAngle = reflectVertical(currentAngle);
+            x += mSpeed * Math.cos(currentAngle);
+            y += mSpeed * Math.sin(currentAngle);
+            Log.e("Test", "vertical reflect: " + currentAngle);
+
+        } else if (y <= 0 || y >= gameView.getHeight() - height) {
+            currentAngle = reflectHorizontal(currentAngle);
+            x += mSpeed * Math.cos(currentAngle);
+            y += mSpeed * Math.sin(currentAngle);
+
+            Log.e("Test", "vertical reflect: " + currentAngle);
+        } else {
+            x += mSpeed * Math.cos(currentAngle);
+            y += mSpeed * Math.sin(currentAngle);
+        }
+
     }
+
 
     void onDraw(Canvas c) {
         update();
         c.drawBitmap(enemyImage, x, y, null);
     }
+
+    /**
+     * Отражение мячика от вертикали
+     */
+    public double reflectVertical(double angle) {
+        if (angle > 0 && angle < PI)
+            angle = PI - angle;
+        else
+            angle = 3 * PI - angle;
+
+        return angle;
+    }
+
+    /**
+     * Отражение мячика от горизонтали
+     */
+    public double reflectHorizontal(double angle) {
+        return angle = 2 * PI - angle;
+    }
+
 
 }

@@ -11,13 +11,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.ponomarenko.gameNinja.MainActivity"
-            android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-
-        </activity>
-
-        <activity
             android:name=".StartActivity"
             android:configChanges="keyboardHidden"
             android:screenOrientation="landscape"
@@ -30,6 +23,16 @@
             </intent-filter>
 
         </activity>
+
+        <activity
+            android:name="com.ponomarenko.gameNinja.MainActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+        <activity
+            android:name=".ResultGameActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <service
             android:name=".MusicService"

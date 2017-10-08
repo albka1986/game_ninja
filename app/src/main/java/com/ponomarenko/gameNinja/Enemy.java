@@ -1,5 +1,6 @@
 package com.ponomarenko.gameNinja;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
@@ -15,13 +16,13 @@ public class Enemy {
     public GameView gameView;
     public Bitmap bmp;
 
-    public Enemy(GameView gameView, Bitmap bmp) {
+    public Enemy(Context context, GameView gameView, Bitmap bmp) {
         this.gameView = gameView;
         this.bmp = bmp;
 
         Random rnd = new Random();
-        this.x = 900;
-        this.y = rnd.nextInt(300);
+        this.x = Utilities.getWidthPx(context) + 100;
+        this.y = rnd.nextInt((int) (Utilities.getHeightPx(context) * 0.8));
         this.speed = rnd.nextInt(10) + 1;
 
         this.width = 9; // width of an enemy

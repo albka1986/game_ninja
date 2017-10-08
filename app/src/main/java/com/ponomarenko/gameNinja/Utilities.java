@@ -5,16 +5,25 @@ import android.util.DisplayMetrics;
 
 public class Utilities {
 
-    public float getWidth(Context context) {
+    public static int getWidthDp(Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        return dpWidth;
+        return (int) (displayMetrics.widthPixels / displayMetrics.density);
     }
 
-    public float getHeight(Context context) {
+    public static int getHeightDp(Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
-        return dpHeight;
+        return (int) (displayMetrics.heightPixels / displayMetrics.density);
     }
+
+    public static int getWidthPx(Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        return displayMetrics.widthPixels;
+    }
+
+    public static int getHeightPx(Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        return displayMetrics.heightPixels;
+    }
+
 
 }

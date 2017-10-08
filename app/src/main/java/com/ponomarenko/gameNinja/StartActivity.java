@@ -38,10 +38,10 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_start);
 
-        splash = (RelativeLayout) findViewById(R.id.splash_screen);
+/*        splash = (RelativeLayout) findViewById(R.id.splash_screen);
         Message msg = new Message();
         msg.what = STOP_SPLASH;
-        splashHandler.sendMessageDelayed(msg, SPLASH_TIME);
+        splashHandler.sendMessageDelayed(msg, SPLASH_TIME);*/
         startService(new Intent(this, MusicService.class));
         Button startButton = (Button) findViewById(R.id.startBtn);
         startButton.setOnClickListener(this);

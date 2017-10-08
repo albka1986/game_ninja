@@ -1,12 +1,16 @@
 package com.ponomarenko.gameNinja;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -16,21 +20,25 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+
 class GameView extends SurfaceView implements Runnable {
 
+    private static final int DELAY_INTENT = 0;
+    private static final long DELAY_TIME = 2500;
     private SoundPool sounds;
     private int sExplosion;
     private static final int ENEMY_AMOUNT = 10;
     private GameThread mThread;
     private boolean running = false;
-    private List<Bullet> ball = new ArrayList<>();
+    private List<Bullet> bullets = new ArrayList<>();
     private Player player;
-    Bitmap players;
+    Bitmap playerImage;
     public int shotY;
     public int shotX;
 
-    private List<Enemy> enemy = new ArrayList<>();
-    Bitmap enemies;
+    private List<Enemy> enemies = new ArrayList<>();
+    Bitmap enemyImage;
     private Thread thread = new Thread(this);
 
 
@@ -65,11 +73,11 @@ class GameView extends SurfaceView implements Runnable {
             }
         });
 
-        players = BitmapFactory.decodeResource(getResources(), R.drawable.ninja);
-        player = new Player(this, players);
-        enemies = BitmapFactory.decodeResource(getResources(), R.drawable.ghost);
+        playerImage = BitmapFactory.decodeResource(getResources(), R.drawable.ninja);
+        player = new Player(context, this, playerImage);
+        enemyImage = BitmapFactory.decodeResource(getResources(), R.drawable.ghost);
         for (int i = 0; i < ENEMY_AMOUNT; i++) {
-            enemy.add(new Enemy(this, enemies));
+            enemies.add(new Enemy(context, this, enemyImage));
         }
         sounds = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
         sExplosion = sounds.load(context, R.raw.bubble_explosion, 1);
@@ -82,7 +90,7 @@ class GameView extends SurfaceView implements Runnable {
             Random rnd = new Random();
             try {
                 thread.sleep(rnd.nextInt(2000));
-                enemy.add(new Enemy(this, enemies));
+                enemies.add(new Enemy(getContext(), this, enemyImage));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -90,7 +98,7 @@ class GameView extends SurfaceView implements Runnable {
 
     }
 
-    public class GameThread extends Thread {
+    private class GameThread extends Thread {
 
         private GameView view;
 
@@ -109,8 +117,11 @@ class GameView extends SurfaceView implements Runnable {
                 try {
                     canvas = view.getHolder().lockCanvas();
                     synchronized (view.getHolder()) {
-                        onDraw(canvas);
+                        draw(canvas);
                         testCollision();
+                        if (enemies.size() == 0) {
+                            Log.e("Test", "run: ");
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -124,10 +135,11 @@ class GameView extends SurfaceView implements Runnable {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
         canvas.drawColor(Color.WHITE);
 
-        Iterator<Bullet> j = ball.iterator();
+        Iterator<Bullet> j = bullets.iterator();
         while (j.hasNext()) {
             Bullet b = j.next();
             if (b.x >= 1000 || b.x <= 1000) {
@@ -137,7 +149,7 @@ class GameView extends SurfaceView implements Runnable {
             }
         }
 
-        Iterator<Enemy> i = enemy.iterator();
+        Iterator<Enemy> i = enemies.iterator();
         while (i.hasNext()) {
             Enemy e = i.next();
             if (e.x >= 1000 || e.x <= 1000) {
@@ -147,7 +159,7 @@ class GameView extends SurfaceView implements Runnable {
             }
         }
 
-        canvas.drawBitmap(player.bmp, 5, 120, null);
+        canvas.drawBitmap(player.bmp, player.x, player.y, null);
     }
 
     public Bullet createSpirit(int resource) {
@@ -161,26 +173,54 @@ class GameView extends SurfaceView implements Runnable {
         shotY = (int) e.getY();
 
         if (e.getAction() == MotionEvent.ACTION_DOWN) {
-            ball.add(createSpirit(R.drawable.bullet));
+            bullets.add(createSpirit(R.drawable.bullet));
         }
 
         return true;
     }
 
     private void testCollision() {
-        Iterator<Bullet> b = ball.iterator();
-        while (b.hasNext()) {
-            Bullet balls = b.next();
-            Iterator<Enemy> i = enemy.iterator();
+        Iterator<Bullet> bullets = this.bullets.iterator();
+        while (bullets.hasNext()) {
+            Bullet bullet = bullets.next();
+            Iterator<Enemy> i = enemies.iterator();
+            if (enemies.size() == 0) {
+                Log.e("Test", "testCollision: ");
+            }
             while (i.hasNext()) {
-                Enemy enemies = i.next();
+                Enemy enemy = i.next();
 
-                if ((Math.abs(balls.x - enemies.x) <= (balls.width + enemies.width) / 2f) && (Math.abs(balls.y - enemies.y) <= (balls.height + enemies.height))) {
+                if ((Math.abs(bullet.x - enemy.x) <= (bullet.width + enemy.width) / 2f) && (Math.abs(bullet.y - enemy.y) <= (bullet.height + enemy.height))) {
                     sounds.play(sExplosion, 1.0f, 1.0f, 0, 0, 1.5f);
                     i.remove();
-                    b.remove();
+                    bullets.remove();
+
+                    if (enemies.size() == 0) {
+                        Message msg = new Message();
+                        msg.what = DELAY_INTENT;
+                        splashHandler.sendMessageDelayed(msg, DELAY_TIME);
+
+                    }
+
                 }
             }
         }
     }
+
+    private Handler splashHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case DELAY_INTENT:
+
+                    Intent intent = new Intent(getContext(), ResultGameActivity.class);
+                    intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("KEY_RESULT_GAME", "WIN");
+                    getContext().startActivity(intent);
+
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
 }

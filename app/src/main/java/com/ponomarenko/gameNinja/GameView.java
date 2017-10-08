@@ -159,7 +159,7 @@ class GameView extends SurfaceView implements Runnable {
             }
         }
 
-        canvas.drawBitmap(player.bmp, player.x, player.y, null);
+        canvas.drawBitmap(player.getBmp(), player.getX(), player.getY(), null);
     }
 
     public Bullet createSpirit(int resource) {

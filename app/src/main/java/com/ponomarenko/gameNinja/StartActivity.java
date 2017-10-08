@@ -42,7 +42,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         Message msg = new Message();
         msg.what = STOP_SPLASH;
         splashHandler.sendMessageDelayed(msg, SPLASH_TIME);*/
-        startService(new Intent(this, MusicService.class));
+//        startService(new Intent(this, MusicService.class));
         Button startButton = (Button) findViewById(R.id.startBtn);
         startButton.setOnClickListener(this);
 

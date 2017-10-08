@@ -13,7 +13,7 @@ public class Bullet {
     private Bitmap bulletImage;
 
     //speed by X
-    private int mSpeed = 25;
+    private int mSpeed = 30;
 
     private double angle;
 
@@ -23,15 +23,18 @@ public class Bullet {
     public Bullet(Context context, GameView gameView, Player player) {
         this.bulletImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet_circle);
 
-        this.x = player.getX() + player.getPlayerImage().getWidth(); // position by X
-        this.y = player.getY(); // position by Y
+        this.x = player.getX(); // position by X
+        this.y = (int) (player.getY() * 0.95); // position by Y
 
-        this.height = 27;
-        this.width = 40;
+        this.height = bulletImage.getHeight();
+        this.width = bulletImage.getWidth();
 
         //угол полета пули в зависипости от координаты косания к экрану
         angle = Math.atan((double) (y - gameView.shotY) / (x - gameView.shotX));
+
+
     }
+
 
     public int getX() {
         return x;

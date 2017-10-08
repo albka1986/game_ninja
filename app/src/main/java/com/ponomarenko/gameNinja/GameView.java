@@ -163,7 +163,7 @@ class GameView extends SurfaceView implements Runnable {
         canvas.drawBitmap(player.getPlayerImage(), player.getX(), player.getY(), null);
     }
 
-    public Bullet createSpirit(Player player) {
+    public Bullet createBullet(Player player) {
         return new Bullet(getContext(), this, player);
     }
 
@@ -182,7 +182,7 @@ class GameView extends SurfaceView implements Runnable {
         shotY = (int) e.getY();
 
         if (e.getAction() == MotionEvent.ACTION_DOWN) {
-            bullets.add(createSpirit(player));
+            bullets.add(createBullet(player));
         }
 
         return false;
@@ -228,4 +228,5 @@ class GameView extends SurfaceView implements Runnable {
             super.handleMessage(msg);
         }
     };
+
 }

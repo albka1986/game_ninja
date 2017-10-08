@@ -36,7 +36,6 @@ class GameView extends SurfaceView implements Runnable {
     public int shotX;
 
     private List<Enemy> enemies = new ArrayList<>();
-    Bitmap enemyImage;
     private Thread thread = new Thread(this);
 
 
@@ -72,6 +71,7 @@ class GameView extends SurfaceView implements Runnable {
         });
 
         player = new Player(context, this);
+//        enemyImage = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
         for (int i = 0; i < ENEMY_AMOUNT; i++) {
             enemies.add(new Enemy(context, this));
         }
@@ -115,6 +115,9 @@ class GameView extends SurfaceView implements Runnable {
                     synchronized (view.getHolder()) {
                         draw(canvas);
                         testCollision();
+                        if (enemies.size() == 0) {
+                            Log.e("Test", "run: ");
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -150,9 +153,9 @@ class GameView extends SurfaceView implements Runnable {
 
         Iterator<Enemy> i = enemies.iterator();
         while (i.hasNext()) {
-            Enemy e = i.next();
-            if (e.x >= 1000 || e.x <= 1000) {
-                e.onDraw(canvas);
+            Enemy enemy = i.next();
+            if (enemy.getX() >= 1000 || enemy.getX() <= 1000) {
+                enemy.onDraw(canvas);
             } else {
                 i.remove();
             }
@@ -183,13 +186,10 @@ class GameView extends SurfaceView implements Runnable {
         while (bullets.hasNext()) {
             Bullet bullet = bullets.next();
             Iterator<Enemy> i = enemies.iterator();
-            if (enemies.size() == 0) {
-                Log.e("Test", "testCollision: ");
-            }
             while (i.hasNext()) {
                 Enemy enemy = i.next();
 
-                if ((Math.abs(bullet.x - enemy.x) <= (bullet.width + enemy.getWidth()) / 2f) && (Math.abs(bullet.y - enemy.y) <= (bullet.height + enemy.getHeight()))) {
+                if ((Math.abs(bullet.x - enemy.getX()) <= (bullet.width + enemy.width) / 2f) && (Math.abs(bullet.y - enemy.getY()) <= (bullet.height + enemy.height))) {
                     sounds.play(sExplosion, 1.0f, 1.0f, 0, 0, 1.5f);
                     i.remove();
                     bullets.remove();
@@ -214,7 +214,6 @@ class GameView extends SurfaceView implements Runnable {
 
                     Intent intent = new Intent(getContext(), ResultGameActivity.class);
                     intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra("KEY_RESULT_GAME", "WIN");
                     getContext().startActivity(intent);
 
                     break;

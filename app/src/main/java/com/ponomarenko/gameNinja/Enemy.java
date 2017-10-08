@@ -9,13 +9,12 @@ import java.util.Random;
 
 public class Enemy {
 
-    int x, y;
+    private int x, y; // position at x and y coordinates
     private int speed;
 
-    private int width, height;
+    public int width, height;
 
-    private GameView gameView;
-    private Bitmap bmp;
+    public GameView gameView;
     private Bitmap enemyImage;
 
     public Enemy(Context context, GameView gameView) {
@@ -55,53 +54,13 @@ public class Enemy {
         this.speed = speed;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public GameView getGameView() {
-        return gameView;
-    }
-
-    public void setGameView(GameView gameView) {
-        this.gameView = gameView;
-    }
-
-    public Bitmap getBmp() {
-        return bmp;
-    }
-
-    public void setBmp(Bitmap bmp) {
-        this.bmp = bmp;
-    }
-
-    public Bitmap getEnemyImage() {
-        return enemyImage;
-    }
-
-    public void setEnemyImage(Bitmap enemyImage) {
-        this.enemyImage = enemyImage;
-    }
-
     private void update() {
-        x -= speed;
+        setX(getX() - getSpeed());
     }
 
     void onDraw(Canvas c) {
         update();
-        c.drawBitmap(bmp, x, y, null);
+        c.drawBitmap(enemyImage, x, y, null);
     }
 
 }

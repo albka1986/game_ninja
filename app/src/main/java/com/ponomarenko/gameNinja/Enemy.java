@@ -33,14 +33,14 @@ public class Enemy {
         this.x = (int) (rnd.nextInt((int) (screenWidthPx * 0.4)) + screenWidthPx * 0.3);
         this.y = (int) (rnd.nextInt((int) (screenHeightPx * 0.4)) + screenHeightPx * 0.3);
 
-        this.mSpeed = rnd.nextInt(10) + 3;
+        this.mSpeed = 50;
+//        this.mSpeed = rnd.nextInt(12) + 4;
 
         this.width = enemyImage.getWidth(); // for accuracy
         this.height = enemyImage.getHeight(); // for accuracy
 
         //random startDirectionAngle of start direction
         this.startDirectionAngle = 45;
-//        this.startDirectionAngle = rnd.nextInt(90) + 90;
         Log.e("Test", "Enemy.startDirectionAngle: " + startDirectionAngle);
         currentAngle = this.startDirectionAngle;
     }
@@ -67,12 +67,6 @@ public class Enemy {
     }
 
     private void update() {
-
-        int heightDp = Utilities.getHeightDp(context);
-        int heightPx = Utilities.getHeightPx(context);
-        int widthDp = Utilities.getWidthDp(context);
-        int widthPx = Utilities.getWidthPx(context);
-
 
         if (x <= 0 || x >= gameView.getWidth() - width) {
             currentAngle = reflectVertical(currentAngle);
@@ -102,7 +96,7 @@ public class Enemy {
     /**
      * Отражение мячика от вертикали
      */
-    public double reflectVertical(double angle) {
+    private double reflectVertical(double angle) {
         if (angle > 0 && angle < PI)
             angle = PI - angle;
         else
@@ -111,11 +105,9 @@ public class Enemy {
         return angle;
     }
 
-    /**
-     * Отражение мячика от горизонтали
-     */
-    public double reflectHorizontal(double angle) {
-        return angle = 2 * PI - angle;
+
+    private double reflectHorizontal(double angle) {
+        return 2 * PI - angle;
     }
 
 

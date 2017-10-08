@@ -189,7 +189,7 @@ class GameView extends SurfaceView implements Runnable {
             while (i.hasNext()) {
                 Enemy enemy = i.next();
 
-                if ((Math.abs(bullet.x - enemy.getX()) <= (bullet.width + enemy.width) / 2f) && (Math.abs(bullet.y - enemy.getY()) <= (bullet.height + enemy.height))) {
+                if ((Math.abs(bullet.x - enemy.getX()) <= (bullet.width + enemy.getWidth()) / 2f) && (Math.abs(bullet.y - enemy.getY()) <= (bullet.height + enemy.getHeight()))) {
                     sounds.play(sExplosion, 1.0f, 1.0f, 0, 0, 1.5f);
                     i.remove();
                     bullets.remove();

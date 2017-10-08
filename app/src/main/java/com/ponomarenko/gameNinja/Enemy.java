@@ -12,7 +12,7 @@ public class Enemy {
     private int x, y; // position at x and y coordinates
     private int speed;
 
-    public int width, height;
+    private int width, height;
 
     public GameView gameView;
     private Bitmap enemyImage;
@@ -54,8 +54,24 @@ public class Enemy {
         this.speed = speed;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
     private void update() {
-        setX(getX() - getSpeed());
+        setX(x - speed);
     }
 
     void onDraw(Canvas c) {

@@ -1,4 +1,4 @@
-package com.ponomarenko.gameNinja;
+package com.ponomarenko.shootingRange;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -85,7 +85,10 @@ public class Bullet {
     }
 
     private void update() {
-        x += mSpeed * Math.cos(angle);
+       /* x += mSpeed * Math.cos(angle);
+        y += mSpeed * Math.sin(angle);*/
+
+        x--;
         y += mSpeed * Math.sin(angle);
     }
 

@@ -1,4 +1,4 @@
-package com.ponomarenko.gameNinja;
+package com.ponomarenko.shootingRange;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

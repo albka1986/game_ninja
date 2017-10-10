@@ -1,8 +1,8 @@
-package com.ponomarenko.gameNinja.core;
+package com.ponomarenko.shootingRange.core;
 
 import android.app.Application;
 
-import com.ponomarenko.gameNinja.Utilities;
+import com.ponomarenko.shootingRange.Utilities;
 
 public class MyApplication extends Application {
 

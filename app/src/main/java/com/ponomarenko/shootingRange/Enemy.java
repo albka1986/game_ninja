@@ -1,4 +1,4 @@
-package com.ponomarenko.gameNinja;
+package com.ponomarenko.shootingRange;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,8 +8,8 @@ import android.util.Log;
 
 import java.util.Random;
 
-import static com.ponomarenko.gameNinja.core.MyApplication.screenHeightPx;
-import static com.ponomarenko.gameNinja.core.MyApplication.screenWidthPx;
+import static com.ponomarenko.shootingRange.core.MyApplication.screenHeightPx;
+import static com.ponomarenko.shootingRange.core.MyApplication.screenWidthPx;
 import static java.lang.Math.PI;
 
 public class Enemy {

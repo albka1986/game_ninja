@@ -1,4 +1,4 @@
-package com.ponomarenko.gameNinja;
+package com.ponomarenko.shootingRange;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Random;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static com.ponomarenko.shootingRange.core.MyApplication.screenHeightPx;
+import static com.ponomarenko.shootingRange.core.MyApplication.screenWidthPx;
 
 class GameView extends SurfaceView implements Runnable {
 
@@ -30,7 +32,7 @@ class GameView extends SurfaceView implements Runnable {
     private static final int ENEMY_AMOUNT = 50;
     private GameThread mThread;
     private boolean running = false;
-    private List<Bullet> bullets = new ArrayList<>();
+    private List<Bullet> bulletList = new ArrayList<>();
     private Player player;
     public int shotY;
     public int shotX;
@@ -140,7 +142,7 @@ class GameView extends SurfaceView implements Runnable {
 
         canvas.drawBitmap(scaled, 0, 0, null);
 
-        Iterator<Bullet> j = bullets.iterator();
+        Iterator<Bullet> j = bulletList.iterator();
         while (j.hasNext()) {
             Bullet bullet = j.next();
             if (bullet.getX() >= 1000 || bullet.getX() <= 1000) {
@@ -182,16 +184,20 @@ class GameView extends SurfaceView implements Runnable {
         shotY = (int) e.getY();
 
         if (e.getAction() == MotionEvent.ACTION_DOWN) {
-            bullets.add(createBullet(player));
+            bulletList.add(createBullet(player));
         }
 
         return false;
     }
 
     private void testCollision() {
-        Iterator<Bullet> bullets = this.bullets.iterator();
+        Iterator<Bullet> bullets = this.bulletList.iterator();
         while (bullets.hasNext()) {
             Bullet bullet = bullets.next();
+            if (bullet.getX() < 0 || bullet.getX() > screenWidthPx || bullet.getY() < 0 || bullet.getY() > screenHeightPx) {
+                bulletList.remove(bullet);
+            }
+
             Iterator<Enemy> i = enemies.iterator();
             while (i.hasNext()) {
                 Enemy enemy = i.next();
@@ -211,6 +217,8 @@ class GameView extends SurfaceView implements Runnable {
                 }
             }
         }
+
+        Log.e("Test", "Amount of bullets: " + bulletList.size());
     }
 
     private Handler splashHandler = new Handler() {

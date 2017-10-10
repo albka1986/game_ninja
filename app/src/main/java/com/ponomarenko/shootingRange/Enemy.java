@@ -26,12 +26,12 @@ public class Enemy {
 
 
     public Enemy(Context context, GameView gameView) {
-        this.enemyImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.ball);
+        this.enemyImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.ball_middle);
         this.gameView = gameView;
         Random rnd = new Random();
         this.context = context;
-        this.x = (int) (rnd.nextInt((int) (screenWidthPx * 0.4)) + screenWidthPx * 0.3);
-        this.y = (int) (rnd.nextInt((int) (screenHeightPx * 0.4)) + screenHeightPx * 0.3);
+        this.x = (int) (rnd.nextInt((int) (screenWidthPx * 0.8)) + screenWidthPx * 0.1);
+        this.y = (int) (rnd.nextInt((int) (screenHeightPx * 0.6)) + screenHeightPx * 0.1);
 
         this.mSpeed = 50;
 //        this.mSpeed = rnd.nextInt(12) + 4;
@@ -82,12 +82,12 @@ public class Enemy {
             y += mSpeed * Math.sin(currentAngle);
             Log.e("Test", "vertical reflect: " + currentAngle);
 
-        } else if (y <= 0 || y >= gameView.getHeight() - height) {
+        } else if (y <= 0 || y >= gameView.getHeight() * 0.75 - height) {
 
             if (y <= 0) {
                 y = 0;
             } else {
-                y = gameView.getHeight() - height;
+                y = (int) (gameView.getHeight() * 0.75 - height);
             }
 
             currentAngle = reflectHorizontal(currentAngle);

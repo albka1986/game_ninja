@@ -5,12 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
-import static java.lang.Math.sqrt;
-
 public class Bullet {
 
     //position
-    private int x, y;
+    private long x;
+    private long y;
 
     private Bitmap bulletImage;
 
@@ -34,13 +33,14 @@ public class Bullet {
         this.width = bulletImage.getWidth();
 
         //угол полета пули в зависипости от координаты косания к экрану
+//      angle = Math.atan((double) (y - gameView.shotY) / (x - gameView.shotX));
         angle = Math.atan((double) (y - gameView.shotY) / (x - gameView.shotX));
 
 
     }
 
 
-    public int getX() {
+    public long getX() {
         return x;
     }
 
@@ -48,7 +48,7 @@ public class Bullet {
         this.x = x;
     }
 
-    public int getY() {
+    public long getY() {
         return y;
     }
 
@@ -91,6 +91,15 @@ public class Bullet {
     private void update() {
 //        x += mSpeed * Math.cos(angle);
 //        y += mSpeed * Math.sin(angle);
+
+
+        x = Math.round(x + mSpeed * Math.cos(angle));
+        y = Math.round(y + mSpeed * Math.sin(angle));
+
+      /*  if (gameView.shotY > y) {
+            gameView.shotY = y;
+        }
+
         double longA = getY() - gameView.shotY;
         double longB = getX() - gameView.shotX;
         double longC = (int) sqrt(longA * longA + longB * longB);
@@ -100,8 +109,7 @@ public class Bullet {
 
         x = x - shortB;
         y = y - shortA;
-
-
+*/
     }
 
     public void onDraw(Canvas canvas) {

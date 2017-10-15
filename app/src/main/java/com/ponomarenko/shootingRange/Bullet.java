@@ -10,13 +10,16 @@ import static java.lang.Math.sqrt;
 public class Bullet {
 
     //position
-    private long x;
-    private long y;
+    private long positionX;
+    private long positionY;
+
+    private long directionX;
+    private long directionY;
 
     private Bitmap bulletImage;
 
     //speed by X
-    private int mSpeed = 60;
+    private  int mSpeed = 60;
 
     private double angle;
 
@@ -28,32 +31,34 @@ public class Bullet {
     public Bullet(Context context, GameView gameView, Player player) {
         this.bulletImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet_circle);
         this.gameView = gameView;
-        this.x = player.getX(); // position by X
-        this.y = (int) (player.getY() * 0.95); // position by Y
+        this.positionX = player.getX(); // position by X
+        this.positionY = (int) (player.getY() * 0.95); // position by Y
 
         this.height = bulletImage.getHeight();
         this.width = bulletImage.getWidth();
 
         //угол полета пули в зависипости от координаты косания к экрану
-        angle = Math.atan((double) (y - gameView.shotY) / (x - gameView.shotX));
+        this.angle = Math.atan((double) (positionY - gameView.shotY) / (positionX - gameView.shotX));
+        directionX = gameView.shotX;
+        directionY = gameView.shotY;
 
     }
 
 
-    public long getX() {
-        return x;
+    public long getPositionX() {
+        return positionX;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setPositionX(int positionX) {
+        this.positionX = positionX;
     }
 
-    public long getY() {
-        return y;
+    public long getPositionY() {
+        return positionY;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
     }
 
     public int getmSpeed() {
@@ -89,57 +94,44 @@ public class Bullet {
     }
 
     private void update() {
-   /*     x += mSpeed * Math.cos(angle);
-        y += mSpeed * Math.sin(angle);
+   /*     positionX += mSpeed * Math.cos(angle);
+        positionY += mSpeed * Math.sin(angle);
 
 
-        x = Math.round(x + mSpeed * Math.cos(angle));
-        y = Math.round(y + mSpeed * Math.sin(angle));*/
+        positionX = Math.round(positionX + mSpeed * Math.cos(angle));
+        positionY = Math.round(positionY + mSpeed * Math.sin(angle));*/
 
- /*       if (gameView.shotY > y) {
-            gameView.shotY = y;
+ /*       if (gameView.shotY > positionY) {
+            gameView.shotY = positionY;
         }*/
 
-        if (gameView.shotX < gameView.player.getY()) {
+        if (directionX < gameView.player.getX()) {
 
-            if (x <= gameView.shotX || y <= gameView.shotY) {
-                x = Math.round(x - mSpeed * Math.cos(angle));
-                y = Math.round(y - mSpeed * Math.sin(angle));
+            if (positionX <= directionX || positionY <= directionY) {
+                positionX = Math.round(positionX - mSpeed * Math.cos(angle));
+                positionY = Math.round(positionY - mSpeed * Math.sin(angle));
             } else {
-                double longA = getY() - gameView.shotY;
-                double longB = getX() - gameView.shotX;
+                double longA = positionY - directionX;
+                double longB = positionX - directionX;
                 double longC = (int) sqrt(longA * longA + longB * longB);
                 double cosB = longB / longC;
                 double shortB = (mSpeed * cosB);
                 double shortA = sqrt(mSpeed * mSpeed - shortB * shortB);
 
-                x = (long) (x - shortB);
-                y = (long) (y - shortA);
+                positionX = (long) (positionX - shortB);
+                positionY = (long) (positionY - shortA);
             }
 
         } else {
-            if (x <= gameView.shotX || y <= gameView.shotY) {
-                x = Math.round(x + mSpeed * Math.cos(angle));
-                y = Math.round(y + mSpeed * Math.sin(angle));
-            } else {
-                double longA = getY() - gameView.shotY;
-                double longB = getX() - gameView.shotX;
-                double longC = (int) sqrt(longA * longA + longB * longB);
-                double cosB = longB / longC;
-                double shortB = (mSpeed * cosB);
-                double shortA = sqrt(mSpeed * mSpeed - shortB * shortB);
-
-                x = (long) (x - shortB);
-                y = (long) (y - shortA);
-
-            }
+            positionX = Math.round(positionX + mSpeed * Math.cos(angle));
+            positionY = Math.round(positionY + mSpeed * Math.sin(angle));
         }
     }
 
 
     public void onDraw(Canvas canvas) {
         update();
-        canvas.drawBitmap(bulletImage, getX(), getY(), null);
+        canvas.drawBitmap(bulletImage, getPositionX(), getPositionY(), null);
     }
 
 }

@@ -145,7 +145,7 @@ class GameView extends SurfaceView implements Runnable {
         Iterator<Bullet> j = bulletList.iterator();
         while (j.hasNext()) {
             Bullet bullet = j.next();
-            if (bullet.getX() >= 1000 || bullet.getX() <= 1000) {
+            if (bullet.getPositionX() >= 1000 || bullet.getPositionX() <= 1000) {
                 bullet.onDraw(canvas);
             } else {
                 j.remove();
@@ -182,7 +182,7 @@ class GameView extends SurfaceView implements Runnable {
 
         new Handler().post(new Runnable() {
             public void run() {
-                sounds.play(sShooting, 1.0f, 1.0f, 0, 0, 1.5f);
+                sounds.play(sShooting, 0.5f, 0.5f, 0, 0, 1.5f);
             }
         });
 
@@ -200,7 +200,7 @@ class GameView extends SurfaceView implements Runnable {
         Iterator<Bullet> bullets = this.bulletList.iterator();
         while (bullets.hasNext()) {
             Bullet bullet = bullets.next();
-            if (bullet.getX() < 0 || bullet.getX() > screenWidthPx || bullet.getY() < 0 || bullet.getY() > screenHeightPx) {
+            if (bullet.getPositionX() < 0 || bullet.getPositionX() > screenWidthPx || bullet.getPositionY() < 0 || bullet.getPositionY() > screenHeightPx) {
                 bulletList.remove(bullet);
             }
 
@@ -208,15 +208,17 @@ class GameView extends SurfaceView implements Runnable {
             while (i.hasNext()) {
                 Enemy enemy = i.next();
 
-                if ((Math.abs(bullet.getX() - enemy.getX()) <= (bullet.getWidth() + enemy.getWidth()) / 2f) && (Math.abs(bullet.getY() - enemy.getY()) <= (bullet.getHeight() + enemy.getHeight()))) {
+                if ((Math.abs(bullet.getPositionX() - enemy.getX()) <= (bullet.getWidth() + enemy.getWidth()) / 2f) && (Math.abs(bullet.getPositionY() - enemy.getY()) <= (bullet.getHeight() + enemy.getHeight()))) {
                     sounds.play(sExplosion, 1.0f, 1.0f, 0, 0, 1.5f);
                     i.remove();
                     bullets.remove();
 
                     if (enemies.size() == 0) {
-                        Message msg = new Message();
+
+                        //TODO: uncommit after testing shooting directions
+                       /* Message msg = new Message();
                         msg.what = DELAY_INTENT;
-                        splashHandler.sendMessageDelayed(msg, DELAY_TIME);
+                        splashHandler.sendMessageDelayed(msg, DELAY_TIME);*/
 
                     }
 

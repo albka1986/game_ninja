@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
+import static java.lang.Math.sqrt;
+
 public class Bullet {
 
     //position
@@ -89,16 +91,16 @@ public class Bullet {
     }
 
     private void update() {
-//        x += mSpeed * Math.cos(angle);
-//        y += mSpeed * Math.sin(angle);
+   /*     x += mSpeed * Math.cos(angle);
+        y += mSpeed * Math.sin(angle);
 
 
         x = Math.round(x + mSpeed * Math.cos(angle));
-        y = Math.round(y + mSpeed * Math.sin(angle));
+        y = Math.round(y + mSpeed * Math.sin(angle));*/
 
-      /*  if (gameView.shotY > y) {
+ /*       if (gameView.shotY > y) {
             gameView.shotY = y;
-        }
+        }*/
 
         double longA = getY() - gameView.shotY;
         double longB = getX() - gameView.shotX;
@@ -109,8 +111,9 @@ public class Bullet {
 
         x = x - shortB;
         y = y - shortA;
-*/
     }
+
+
 
     public void onDraw(Canvas canvas) {
         update();

@@ -173,12 +173,18 @@ class GameView extends SurfaceView implements Runnable {
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         Log.e("Test", "onTouchEvent: x = " + e.getX() + ", y = " + e.getY());
+
+        if (e.getAction() == MotionEvent.ACTION_DOWN) {
+            if (e.getY() >= player.getY()) {
+                return false;
+            }
+        }
+
         new Handler().post(new Runnable() {
             public void run() {
                 sounds.play(sShooting, 1.0f, 1.0f, 0, 0, 1.5f);
             }
         });
-
 
         shotX = (int) e.getX();
         shotY = (int) e.getY();

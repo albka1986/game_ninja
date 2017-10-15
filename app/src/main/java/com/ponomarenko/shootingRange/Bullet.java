@@ -35,9 +35,7 @@ public class Bullet {
         this.width = bulletImage.getWidth();
 
         //угол полета пули в зависипости от координаты косания к экрану
-//      angle = Math.atan((double) (y - gameView.shotY) / (x - gameView.shotX));
         angle = Math.atan((double) (y - gameView.shotY) / (x - gameView.shotX));
-
 
     }
 
@@ -102,17 +100,41 @@ public class Bullet {
             gameView.shotY = y;
         }*/
 
-        double longA = getY() - gameView.shotY;
-        double longB = getX() - gameView.shotX;
-        double longC = (int) sqrt(longA * longA + longB * longB);
-        double cosB = longB / longC;
-        int shortB = (int) (mSpeed * cosB);
-        int shortA = (int) sqrt(mSpeed * mSpeed - shortB * shortB);
+        if (gameView.shotX < gameView.player.getY()) {
 
-        x = x - shortB;
-        y = y - shortA;
+            if (x <= gameView.shotX || y <= gameView.shotY) {
+                x = Math.round(x - mSpeed * Math.cos(angle));
+                y = Math.round(y - mSpeed * Math.sin(angle));
+            } else {
+                double longA = getY() - gameView.shotY;
+                double longB = getX() - gameView.shotX;
+                double longC = (int) sqrt(longA * longA + longB * longB);
+                double cosB = longB / longC;
+                double shortB = (mSpeed * cosB);
+                double shortA = sqrt(mSpeed * mSpeed - shortB * shortB);
+
+                x = (long) (x - shortB);
+                y = (long) (y - shortA);
+            }
+
+        } else {
+            if (x <= gameView.shotX || y <= gameView.shotY) {
+                x = Math.round(x + mSpeed * Math.cos(angle));
+                y = Math.round(y + mSpeed * Math.sin(angle));
+            } else {
+                double longA = getY() - gameView.shotY;
+                double longB = getX() - gameView.shotX;
+                double longC = (int) sqrt(longA * longA + longB * longB);
+                double cosB = longB / longC;
+                double shortB = (mSpeed * cosB);
+                double shortA = sqrt(mSpeed * mSpeed - shortB * shortB);
+
+                x = (long) (x - shortB);
+                y = (long) (y - shortA);
+
+            }
+        }
     }
-
 
 
     public void onDraw(Canvas canvas) {

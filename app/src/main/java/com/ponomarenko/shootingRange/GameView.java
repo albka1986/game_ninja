@@ -33,7 +33,7 @@ class GameView extends SurfaceView implements Runnable {
     private GameThread mThread;
     private boolean running = false;
     private List<Bullet> bulletList = new ArrayList<>();
-    private Player player;
+    public Player player;
     public int shotY;
     public int shotX;
 

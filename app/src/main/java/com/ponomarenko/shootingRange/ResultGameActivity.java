@@ -8,23 +8,46 @@ import android.view.View;
 import android.widget.Button;
 
 
-public class ResultGameActivity extends AppCompatActivity {
+public class ResultGameActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_game);
 
-        Button button = (Button) findViewById(R.id.okBtn);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ResultGameActivity.this, StartActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
+        Button okBtn = (Button) findViewById(R.id.okBtn);
+        okBtn.setOnClickListener(this);
+
+        Button resetBtn = (Button) findViewById(R.id.restartBtn);
+        resetBtn.setOnClickListener(this);
     }
 
 
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.okBtn:
+                Intent runStartActivity = new Intent(ResultGameActivity.this, StartActivity.class);
+                runStartActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(runStartActivity);
+                break;
+
+            case R.id.restartBtn:
+                Intent intent = new Intent();
+                intent.setClass(this, MainActivity.class);
+                startActivity(intent);
+                break;
+
+        }
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent runStartActivity = new Intent(ResultGameActivity.this, StartActivity.class);
+        runStartActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(runStartActivity);
+    }
 }

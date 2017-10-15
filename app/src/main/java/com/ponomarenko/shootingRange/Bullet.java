@@ -19,7 +19,7 @@ public class Bullet {
     private Bitmap bulletImage;
 
     //speed by X
-    private  int mSpeed = 60;
+    private  int mSpeed = 50;
 
     private double angle;
 

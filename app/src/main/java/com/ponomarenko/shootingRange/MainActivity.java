@@ -12,4 +12,9 @@ public class MainActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(new GameView(this));
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

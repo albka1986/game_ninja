@@ -29,7 +29,7 @@ class GameView extends SurfaceView implements Runnable {
     private static final long DELAY_TIME = 2500;
     private SoundPool sounds;
     private int sExplosion;
-    private static final int ENEMY_AMOUNT = 50;
+    private static final int ENEMY_AMOUNT = 20;
     private GameThread mThread;
     private boolean running = false;
     private List<Bullet> bulletList = new ArrayList<>();
@@ -214,12 +214,9 @@ class GameView extends SurfaceView implements Runnable {
                     bullets.remove();
 
                     if (enemies.size() == 0) {
-
-                        //TODO: uncommit after testing shooting directions
-                       /* Message msg = new Message();
+                        Message msg = new Message();
                         msg.what = DELAY_INTENT;
-                        splashHandler.sendMessageDelayed(msg, DELAY_TIME);*/
-
+                        splashHandler.sendMessageDelayed(msg, DELAY_TIME);
                     }
 
                 }

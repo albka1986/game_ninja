@@ -137,10 +137,10 @@ class GameView extends SurfaceView implements Runnable {
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
-        Bitmap background = BitmapFactory.decodeResource(getResources(), R.drawable.background_image_game);
-        Bitmap scaled = Bitmap.createScaledBitmap(background, Utilities.getWidthPx(getContext()), Utilities.getHeightPx(getContext()), true);
+//        Bitmap background = BitmapFactory.decodeResource(getResources(), R.drawable.background_image_game);
+//        Bitmap scaled = Bitmap.createScaledBitmap(background, Utilities.getWidthPx(getContext()), Utilities.getHeightPx(getContext()), true);
 
-        canvas.drawBitmap(scaled, 0, 0, null);
+//        canvas.drawBitmap(scaled, 0, 0, null);
 
         Iterator<Bullet> j = bulletList.iterator();
         while (j.hasNext()) {

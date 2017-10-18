@@ -47,9 +47,11 @@ public class ResultGameActivity extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.restartBtn:
-                Intent intent = new Intent();
-                intent.setClass(this, MainActivity.class);
-                startActivity(intent);
+                Intent restartIntent = new Intent();
+                restartIntent.setClass(this, MainActivity.class);
+                restartIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                startActivity(restartIntent);
                 break;
         }
     }

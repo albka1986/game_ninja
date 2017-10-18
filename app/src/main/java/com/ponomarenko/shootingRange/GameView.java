@@ -63,7 +63,7 @@ class GameView extends SurfaceView implements Runnable {
                 Message msg = new Message();
                 msg.what = DELAY_INTENT;
                 splashHandler.sendMessageDelayed(msg, DELAY_TIME_50);
-                Log.e(GameView.class.getSimpleName(), "surfaceCreated: ");
+                Log.d(GameView.class.getSimpleName(), "surfaceCreated: ");
             }
 
             @Override
@@ -132,7 +132,7 @@ class GameView extends SurfaceView implements Runnable {
                         draw(canvas);
                         testCollision();
                         if (enemies.size() == 0) {
-                            Log.e("Test", "run: ");
+                            Log.d(GameView.class.getSimpleName(), "run: ");
                         }
                     }
                 } catch (Exception e) {
@@ -183,7 +183,7 @@ class GameView extends SurfaceView implements Runnable {
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        Log.e("Test", "onTouchEvent: x = " + e.getX() + ", y = " + e.getY());
+        Log.d(GameView.class.getSimpleName(), "onTouchEvent: x = " + e.getX() + ", y = " + e.getY());
 
         if (e.getAction() == MotionEvent.ACTION_DOWN) {
             if (e.getY() >= player.getY()) {
@@ -229,7 +229,6 @@ class GameView extends SurfaceView implements Runnable {
                         msg.what = DELAY_INTENT;
                         splashHandler.sendMessageDelayed(msg, DELAY_TIME_3);
                     }
-
                 }
             }
         }

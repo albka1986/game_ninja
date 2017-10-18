@@ -24,9 +24,9 @@ public class ResultGameActivity extends AppCompatActivity implements View.OnClic
         Button resetBtn = (Button) findViewById(R.id.restartBtn);
         resetBtn.setOnClickListener(this);
 
-        String amountKilledEnemies = getIntent().getStringExtra(KEY_AMOUNT_KILLED_ENEMIES);
+        int amountKilledEnemies = getIntent().getIntExtra(KEY_AMOUNT_KILLED_ENEMIES, 0);
         TextView killedAmount = (TextView) findViewById(R.id.killed_enemies_tv);
-        killedAmount.setText(amountKilledEnemies);
+        killedAmount.setText(String.valueOf(amountKilledEnemies));
     }
 
 

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.util.Log;
 
 import java.util.Random;
 
@@ -92,7 +91,6 @@ public class Enemy {
             x += mSpeed * Math.cos(currentAngle);
             y += mSpeed * Math.sin(currentAngle);
 
-            Log.e("Test", "vertical reflect: " + currentAngle);
         } else {
             x += mSpeed * Math.cos(currentAngle);
             y += mSpeed * Math.sin(currentAngle);

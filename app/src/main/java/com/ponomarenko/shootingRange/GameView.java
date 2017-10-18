@@ -17,18 +17,17 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static com.ponomarenko.shootingRange.ResultGameActivity.KEY_AMOUNT_KILLED_ENEMIES;
 import static com.ponomarenko.shootingRange.core.MyApplication.screenHeightPx;
 import static com.ponomarenko.shootingRange.core.MyApplication.screenWidthPx;
 
-class GameView extends SurfaceView implements Runnable {
+class GameView extends SurfaceView {
 
     private static final int DELAY_INTENT = 0;
     private static final long DELAY_TIME_3 = 3000;
-    private static final long DELAY_TIME_50 = 50000;
+    private static final long GAME_TIME = 50000;
     private SoundPool sounds;
     private int sExplosion;
     private static final int ENEMY_AMOUNT = 20;
@@ -39,11 +38,12 @@ class GameView extends SurfaceView implements Runnable {
     public int shotY;
     public int shotX;
 
+    long startTime;
+    long finishTime;
+
     private List<Enemy> enemies = new ArrayList<>();
-//    private Thread thread = new Thread(this);
     private int sShooting;
     private Bitmap scaledBackground;
-    private int what;
 
 
     public GameView(Context context) {
@@ -55,6 +55,10 @@ class GameView extends SurfaceView implements Runnable {
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
                 mThread.setRunning(true);
                 mThread.start();
+                startTime = System.currentTimeMillis();
+                Message msg = new Message();
+                msg.what = DELAY_INTENT;
+                handler.sendMessageDelayed(msg, GAME_TIME);
 
                 Bitmap background = BitmapFactory.decodeResource(getResources(), R.drawable.background_image_game);
                 float scale = (float) background.getHeight() / (float) getHeight();
@@ -62,10 +66,7 @@ class GameView extends SurfaceView implements Runnable {
                 int newHeight = Math.round(background.getHeight() / scale);
                 scaledBackground = Bitmap.createScaledBitmap(background, newWidth, newHeight, true);
 
-                Message msg = new Message();
-                msg.what = DELAY_INTENT;
-                handler.sendMessageDelayed(msg, DELAY_TIME_50);
-                Log.d(GameView.class.getSimpleName(), "surfaceCreated: ");
+
             }
 
             @Override
@@ -75,6 +76,7 @@ class GameView extends SurfaceView implements Runnable {
             @Override
             public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
                 handler.removeCallbacksAndMessages(null);
+
                 boolean retry = true;
                 mThread.setRunning(false);
 
@@ -96,21 +98,6 @@ class GameView extends SurfaceView implements Runnable {
         sounds = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
         sExplosion = sounds.load(context, R.raw.bubble_explosion, 1);
         sShooting = sounds.load(context, R.raw.sound_rifle_shoot, 1);
-    }
-
-
-
-    @Override
-    public void run() {
-     /*   while (true) {
-            Random rnd = new Random();
-            try {
-                thread.sleep(rnd.nextInt(2000));
-                enemies.add(new Enemy(getContext(), this));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }*/
     }
 
     private class GameThread extends Thread {
@@ -229,8 +216,7 @@ class GameView extends SurfaceView implements Runnable {
 
                     if (enemies.size() == 0) {
                         Message msg = new Message();
-                        what = msg.what;
-                        what = DELAY_INTENT;
+                        msg.what = DELAY_INTENT;
                         handler.sendMessageDelayed(msg, DELAY_TIME_3);
                     }
                 }
@@ -246,6 +232,8 @@ class GameView extends SurfaceView implements Runnable {
                     Intent intent = new Intent(getContext(), ResultGameActivity.class);
                     intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra(KEY_AMOUNT_KILLED_ENEMIES, ENEMY_AMOUNT - enemies.size());
+
+                    finishTime = (System.currentTimeMillis() - startTime) / 1000;
 
                     getContext().startActivity(intent);
 

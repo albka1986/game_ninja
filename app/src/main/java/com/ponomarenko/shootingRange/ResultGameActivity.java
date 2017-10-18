@@ -12,6 +12,7 @@ import android.widget.TextView;
 public class ResultGameActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String KEY_AMOUNT_KILLED_ENEMIES = "killedEnemies";
+    public static final String KEY_SPENT_TIME = "spentTime";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,6 +28,11 @@ public class ResultGameActivity extends AppCompatActivity implements View.OnClic
         int amountKilledEnemies = getIntent().getIntExtra(KEY_AMOUNT_KILLED_ENEMIES, 0);
         TextView killedAmount = (TextView) findViewById(R.id.killed_enemies_tv);
         killedAmount.setText(String.valueOf(amountKilledEnemies));
+
+
+        TextView spentTimeTV = (TextView) findViewById(R.id.spent_time_tv);
+        String spentTime = getIntent().getIntExtra(KEY_SPENT_TIME, 0) + " sec";
+        spentTimeTV.setText(spentTime);
     }
 
 

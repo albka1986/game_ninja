@@ -20,6 +20,7 @@ import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static com.ponomarenko.shootingRange.ResultGameActivity.KEY_AMOUNT_KILLED_ENEMIES;
+import static com.ponomarenko.shootingRange.ResultGameActivity.KEY_SPENT_TIME;
 import static com.ponomarenko.shootingRange.core.MyApplication.screenHeightPx;
 import static com.ponomarenko.shootingRange.core.MyApplication.screenWidthPx;
 
@@ -39,7 +40,7 @@ class GameView extends SurfaceView {
     public int shotX;
 
     long startTime;
-    long finishTime;
+    int spentTime;
 
     private List<Enemy> enemies = new ArrayList<>();
     private int sShooting;
@@ -65,8 +66,6 @@ class GameView extends SurfaceView {
                 int newWidth = Math.round(background.getWidth() / scale);
                 int newHeight = Math.round(background.getHeight() / scale);
                 scaledBackground = Bitmap.createScaledBitmap(background, newWidth, newHeight, true);
-
-
             }
 
             @Override
@@ -233,7 +232,8 @@ class GameView extends SurfaceView {
                     intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra(KEY_AMOUNT_KILLED_ENEMIES, ENEMY_AMOUNT - enemies.size());
 
-                    finishTime = (System.currentTimeMillis() - startTime) / 1000;
+                    spentTime = (int) ((System.currentTimeMillis() - startTime) / 1000);
+                    intent.putExtra(KEY_SPENT_TIME, spentTime);
 
                     getContext().startActivity(intent);
 

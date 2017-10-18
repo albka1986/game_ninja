@@ -40,12 +40,14 @@ class GameView extends SurfaceView implements Runnable {
     public int shotX;
 
     private List<Enemy> enemies = new ArrayList<>();
-    private Thread thread = new Thread(this);
+//    private Thread thread = new Thread(this);
     private int sShooting;
     private Bitmap scaledBackground;
+    private int what;
 
 
     public GameView(Context context) {
+
         super(context);
         mThread = new GameThread(this);
         getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -62,7 +64,7 @@ class GameView extends SurfaceView implements Runnable {
 
                 Message msg = new Message();
                 msg.what = DELAY_INTENT;
-                splashHandler.sendMessageDelayed(msg, DELAY_TIME_50);
+                handler.sendMessageDelayed(msg, DELAY_TIME_50);
                 Log.d(GameView.class.getSimpleName(), "surfaceCreated: ");
             }
 
@@ -72,6 +74,7 @@ class GameView extends SurfaceView implements Runnable {
 
             @Override
             public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+                handler.removeCallbacksAndMessages(null);
                 boolean retry = true;
                 mThread.setRunning(false);
 
@@ -95,10 +98,11 @@ class GameView extends SurfaceView implements Runnable {
         sShooting = sounds.load(context, R.raw.sound_rifle_shoot, 1);
     }
 
+
+
     @Override
     public void run() {
-
-        while (true) {
+     /*   while (true) {
             Random rnd = new Random();
             try {
                 thread.sleep(rnd.nextInt(2000));
@@ -106,8 +110,7 @@ class GameView extends SurfaceView implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
-
+        }*/
     }
 
     private class GameThread extends Thread {
@@ -226,15 +229,16 @@ class GameView extends SurfaceView implements Runnable {
 
                     if (enemies.size() == 0) {
                         Message msg = new Message();
-                        msg.what = DELAY_INTENT;
-                        splashHandler.sendMessageDelayed(msg, DELAY_TIME_3);
+                        what = msg.what;
+                        what = DELAY_INTENT;
+                        handler.sendMessageDelayed(msg, DELAY_TIME_3);
                     }
                 }
             }
         }
     }
 
-    private Handler splashHandler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {

@@ -2,6 +2,10 @@ package com.ponomarenko.shootingRange;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.Log;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Utilities {
 
@@ -24,6 +28,8 @@ public class Utilities {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         return displayMetrics.heightPixels;
     }
+
+
 
 
 }

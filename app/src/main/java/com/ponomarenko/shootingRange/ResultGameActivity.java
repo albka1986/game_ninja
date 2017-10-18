@@ -6,9 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 public class ResultGameActivity extends AppCompatActivity implements View.OnClickListener {
+
+    public static final String KEY_AMOUNT_KILLED_ENEMIES = "killedEnemies";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -20,6 +23,10 @@ public class ResultGameActivity extends AppCompatActivity implements View.OnClic
 
         Button resetBtn = (Button) findViewById(R.id.restartBtn);
         resetBtn.setOnClickListener(this);
+
+        String amountKilledEnemies = getIntent().getStringExtra(KEY_AMOUNT_KILLED_ENEMIES);
+        TextView killedAmount = (TextView) findViewById(R.id.killed_enemies_tv);
+        killedAmount.setText(amountKilledEnemies);
     }
 
 
@@ -38,10 +45,7 @@ public class ResultGameActivity extends AppCompatActivity implements View.OnClic
                 intent.setClass(this, MainActivity.class);
                 startActivity(intent);
                 break;
-
         }
-
-
     }
 
     @Override

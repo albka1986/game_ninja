@@ -41,7 +41,6 @@ public class Enemy {
 
         //random startDirectionAngle of start direction
         this.startDirectionAngle = 45;
-        Log.e("Test", "Enemy.startDirectionAngle: " + startDirectionAngle);
         currentAngle = this.startDirectionAngle;
     }
 
@@ -80,7 +79,6 @@ public class Enemy {
             currentAngle = reflectVertical(currentAngle);
             x += mSpeed * Math.cos(currentAngle);
             y += mSpeed * Math.sin(currentAngle);
-            Log.e("Test", "vertical reflect: " + currentAngle);
 
         } else if (y <= 0 || y >= gameView.getHeight() * 0.75 - height) {
 

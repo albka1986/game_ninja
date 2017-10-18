@@ -20,13 +20,15 @@ import java.util.List;
 import java.util.Random;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static com.ponomarenko.shootingRange.ResultGameActivity.KEY_AMOUNT_KILLED_ENEMIES;
 import static com.ponomarenko.shootingRange.core.MyApplication.screenHeightPx;
 import static com.ponomarenko.shootingRange.core.MyApplication.screenWidthPx;
 
 class GameView extends SurfaceView implements Runnable {
 
     private static final int DELAY_INTENT = 0;
-    private static final long DELAY_TIME = 2500;
+    private static final long DELAY_TIME_3 = 3000;
+    private static final long DELAY_TIME_50 = 50000;
     private SoundPool sounds;
     private int sExplosion;
     private static final int ENEMY_AMOUNT = 20;
@@ -57,6 +59,11 @@ class GameView extends SurfaceView implements Runnable {
                 int newWidth = Math.round(background.getWidth() / scale);
                 int newHeight = Math.round(background.getHeight() / scale);
                 scaledBackground = Bitmap.createScaledBitmap(background, newWidth, newHeight, true);
+
+                Message msg = new Message();
+                msg.what = DELAY_INTENT;
+                splashHandler.sendMessageDelayed(msg, DELAY_TIME_50);
+                Log.e(GameView.class.getSimpleName(), "surfaceCreated: ");
             }
 
             @Override
@@ -103,8 +110,6 @@ class GameView extends SurfaceView implements Runnable {
 
     }
 
-
-
     private class GameThread extends Thread {
 
         private GameView view;
@@ -142,14 +147,9 @@ class GameView extends SurfaceView implements Runnable {
     }
 
 
-
-
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-
-//        Bitmap background = BitmapFactory.decodeResource(getResources(), R.drawable.background_image_game);
-//        Bitmap scaled = Bitmap.createScaledBitmap(background, Utilities.getWidthPx(getContext()), Utilities.getHeightPx(getContext()), true);
 
         canvas.drawBitmap(scaledBackground, 0, 0, null);
 
@@ -227,14 +227,12 @@ class GameView extends SurfaceView implements Runnable {
                     if (enemies.size() == 0) {
                         Message msg = new Message();
                         msg.what = DELAY_INTENT;
-                        splashHandler.sendMessageDelayed(msg, DELAY_TIME);
+                        splashHandler.sendMessageDelayed(msg, DELAY_TIME_3);
                     }
 
                 }
             }
         }
-
-        Log.e("Test", "Amount of bullets: " + bulletList.size());
     }
 
     private Handler splashHandler = new Handler() {
@@ -242,9 +240,10 @@ class GameView extends SurfaceView implements Runnable {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case DELAY_INTENT:
-
                     Intent intent = new Intent(getContext(), ResultGameActivity.class);
                     intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra(KEY_AMOUNT_KILLED_ENEMIES, ENEMY_AMOUNT - enemies.size());
+
                     getContext().startActivity(intent);
 
                     break;

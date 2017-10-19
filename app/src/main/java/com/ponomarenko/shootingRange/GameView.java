@@ -27,7 +27,7 @@ import static com.ponomarenko.shootingRange.core.MyApplication.screenWidthPx;
 class GameView extends SurfaceView {
 
     private static final int DELAY_INTENT = 0;
-    private static final long DELAY_TIME_3 = 3000;
+    private static final long DELAY_TIME_3 = 1000;
     private static final long GAME_TIME = 50000;
     private SoundPool sounds;
     private int sExplosion;
@@ -36,11 +36,12 @@ class GameView extends SurfaceView {
     private boolean running = false;
     private List<Bullet> bulletList = new ArrayList<>();
     public Player player;
+    private Timer timer;
     public int shotY;
     public int shotX;
 
-    long startTime;
-    int spentTime;
+    private long startTime;
+    private static String remainTime = "50";
 
     private List<Enemy> enemies = new ArrayList<>();
     private int sShooting;
@@ -91,6 +92,7 @@ class GameView extends SurfaceView {
         });
 
         player = new Player(context, this);
+        timer = new Timer(context, this);
         for (int i = 0; i < ENEMY_AMOUNT; i++) {
             enemies.add(new Enemy(context, this));
         }
@@ -162,7 +164,15 @@ class GameView extends SurfaceView {
             }
         }
 
+        updateRemainTime();
+        timer.onDraw(canvas, remainTime);
+
+
         canvas.drawBitmap(player.getPlayerImage(), player.getX(), player.getY(), null);
+    }
+
+    private void updateRemainTime() {
+        remainTime = String.valueOf((GAME_TIME / 1000) - getSpentTime());
     }
 
     public Bullet createBullet(Player player) {
@@ -232,7 +242,7 @@ class GameView extends SurfaceView {
                     intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra(KEY_AMOUNT_KILLED_ENEMIES, ENEMY_AMOUNT - enemies.size());
 
-                    spentTime = (int) ((System.currentTimeMillis() - startTime) / 1000);
+                    int spentTime = getSpentTime();
                     intent.putExtra(KEY_SPENT_TIME, spentTime);
 
                     getContext().startActivity(intent);
@@ -242,5 +252,9 @@ class GameView extends SurfaceView {
             super.handleMessage(msg);
         }
     };
+
+    private int getSpentTime() {
+        return (int) ((System.currentTimeMillis() - startTime) / 1000);
+    }
 
 }

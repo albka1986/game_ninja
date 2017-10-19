@@ -120,5 +120,8 @@ public class Enemy {
         return 2 * PI - angle;
     }
 
+    void explosion(Canvas c){
+        c.drawBitmap(enemyImage, x, y, null);
+    }
 
 }

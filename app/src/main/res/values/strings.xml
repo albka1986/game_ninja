@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Shooting Range</string>
+    <string name="game_result">GAME RESULT</string>
+    <string name="killed_enemies">Killed enemies:</string>
+    <string name="spent_time">Spent time:</string>
 </resources>

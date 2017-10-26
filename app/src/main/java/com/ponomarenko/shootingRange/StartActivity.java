@@ -50,4 +50,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         stopService(new Intent(this, MusicService.class));
         finish();
     }
+
+    public  native String callNative();
 }

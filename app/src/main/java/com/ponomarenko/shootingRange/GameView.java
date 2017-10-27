@@ -137,9 +137,6 @@ class GameView extends SurfaceView {
                     synchronized (view.getHolder()) {
                         draw(canvas);
                         testCollision();
-                        if (enemies.size() == 0) {
-                            Log.d(GameView.class.getSimpleName(), "run: ");
-                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -243,6 +240,7 @@ class GameView extends SurfaceView {
                         msg.what = DELAY_INTENT;
                         handler.sendMessageDelayed(msg, DELAY_TIME_3);
                     }
+                    return;
                 }
             }
         }

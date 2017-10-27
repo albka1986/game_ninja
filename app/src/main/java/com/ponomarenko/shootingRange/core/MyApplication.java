@@ -1,6 +1,7 @@
 package com.ponomarenko.shootingRange.core;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.ponomarenko.shootingRange.Utilities;
 
@@ -15,4 +16,5 @@ public class MyApplication extends Application {
         screenHeightPx = Utilities.getHeightPx(this);
         screenWidthPx = Utilities.getWidthPx(this);
     }
+
 }

@@ -14,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.ponomarenko.shootingRange.core.MyApplication;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -39,11 +41,12 @@ class GameView extends SurfaceView {
     private Timer timer;
     public int shotY;
     public int shotX;
+    private Handler handler;
 
-    private long startTime;
+    private static long startTime;
     private static String remainTime = "50";
 
-    private List<Enemy> enemies = new ArrayList<>();
+    protected static List<Enemy> enemies = new ArrayList<>();
     private int sShooting;
     private Bitmap scaledBackground;
 
@@ -55,6 +58,7 @@ class GameView extends SurfaceView {
         getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
+                handler = new CustomHandler();
                 mThread.setRunning(true);
                 mThread.start();
                 startTime = System.currentTimeMillis();
@@ -105,7 +109,7 @@ class GameView extends SurfaceView {
 
         private GameView view;
 
-        public GameThread(GameView view) {
+        GameThread(GameView view) {
             this.view = view;
         }
 
@@ -233,28 +237,33 @@ class GameView extends SurfaceView {
         }
     }
 
-    private Handler handler = new Handler() {
+    private static int getSpentTime() {
+        return (int) ((System.currentTimeMillis() - startTime) / 1000);
+    }
+
+    class CustomHandler extends Handler {
+
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case DELAY_INTENT:
-                    Intent intent = new Intent(getContext(), ResultGameActivity.class);
-                    intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra(KEY_AMOUNT_KILLED_ENEMIES, ENEMY_AMOUNT - enemies.size());
-
-                    int spentTime = getSpentTime();
-                    intent.putExtra(KEY_SPENT_TIME, spentTime);
-
-                    getContext().startActivity(intent);
+                    launchResultActivity();
 
                     break;
             }
             super.handleMessage(msg);
         }
-    };
 
-    private int getSpentTime() {
-        return (int) ((System.currentTimeMillis() - startTime) / 1000);
     }
 
+    private void launchResultActivity() {
+        Intent intent = new Intent(getContext(), ResultGameActivity.class);
+        intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(KEY_AMOUNT_KILLED_ENEMIES, ENEMY_AMOUNT - enemies.size());
+
+        int spentTime = getSpentTime();
+        intent.putExtra(KEY_SPENT_TIME, spentTime);
+
+        getContext().startActivity(intent);
+    }
 }

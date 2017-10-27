@@ -14,11 +14,10 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.ponomarenko.shootingRange.core.MyApplication;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static com.ponomarenko.shootingRange.ResultGameActivity.KEY_AMOUNT_KILLED_ENEMIES;
@@ -30,10 +29,10 @@ class GameView extends SurfaceView {
 
     private static final int DELAY_INTENT = 0;
     private static final long DELAY_TIME_3 = 1000;
-    private static final long GAME_TIME = 50000;
+    private long gameTime;
     private SoundPool sounds;
     private int sExplosion;
-    private static final int ENEMY_AMOUNT = 20;
+    private int enemyAmount;
     private GameThread mThread;
     private boolean running = false;
     private List<Bullet> bulletList = new ArrayList<>();
@@ -42,9 +41,10 @@ class GameView extends SurfaceView {
     public int shotY;
     public int shotX;
     private Handler handler;
+    private int enemySpeed;
 
     private static long startTime;
-    private static String remainTime = "50";
+    private long remainTime = gameTime;
 
     protected static List<Enemy> enemies = new ArrayList<>();
     private int sShooting;
@@ -54,6 +54,17 @@ class GameView extends SurfaceView {
     public GameView(Context context) {
 
         super(context);
+        Map<String, Integer> config = Utilities.readConfig(context);
+        int time = config.get("time") * 1000;
+        gameTime = (time == 0) ? 50000 : time;
+
+        int amount = config.get("countTarget");
+        enemyAmount = (amount == 0) ? 20 : amount;
+
+        int speed = config.get("speed");
+        enemySpeed = (speed == 0) ? 50 : speed;
+
+
         mThread = new GameThread(this);
         getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -64,7 +75,7 @@ class GameView extends SurfaceView {
                 startTime = System.currentTimeMillis();
                 Message msg = new Message();
                 msg.what = DELAY_INTENT;
-                handler.sendMessageDelayed(msg, GAME_TIME);
+                handler.sendMessageDelayed(msg, gameTime);
 
                 Bitmap background = BitmapFactory.decodeResource(getResources(), R.drawable.background_image_game);
                 float scale = (float) background.getHeight() / (float) getHeight();
@@ -97,8 +108,8 @@ class GameView extends SurfaceView {
 
         player = new Player(context, this);
         timer = new Timer(context, this);
-        for (int i = 0; i < ENEMY_AMOUNT; i++) {
-            enemies.add(new Enemy(context, this));
+        for (int i = 0; i < enemyAmount; i++) {
+            enemies.add(new Enemy(context, this, enemySpeed));
         }
         sounds = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
         sExplosion = sounds.load(context, R.raw.bubble_explosion, 1);
@@ -169,14 +180,14 @@ class GameView extends SurfaceView {
         }
 
         updateRemainTime();
-        timer.onDraw(canvas, remainTime);
+        timer.onDraw(canvas, String.valueOf(remainTime));
 
 
         canvas.drawBitmap(player.getPlayerImage(), player.getX(), player.getY(), null);
     }
 
     private void updateRemainTime() {
-        remainTime = String.valueOf((GAME_TIME / 1000) - getSpentTime());
+        remainTime = (gameTime / 1000) - getSpentTime();
     }
 
     public Bullet createBullet(Player player) {
@@ -259,7 +270,7 @@ class GameView extends SurfaceView {
     private void launchResultActivity() {
         Intent intent = new Intent(getContext(), ResultGameActivity.class);
         intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(KEY_AMOUNT_KILLED_ENEMIES, ENEMY_AMOUNT - enemies.size());
+        intent.putExtra(KEY_AMOUNT_KILLED_ENEMIES, enemyAmount - enemies.size());
 
         int spentTime = getSpentTime();
         intent.putExtra(KEY_SPENT_TIME, spentTime);

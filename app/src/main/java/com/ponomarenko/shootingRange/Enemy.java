@@ -24,7 +24,7 @@ public class Enemy {
     private GameView gameView;
 
 
-    public Enemy(Context context, GameView gameView) {
+    public Enemy(Context context, GameView gameView, int enemySpeed) {
         this.enemyImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.ball_middle);
         this.gameView = gameView;
         Random rnd = new Random();
@@ -32,7 +32,7 @@ public class Enemy {
         this.x = (int) (rnd.nextInt((int) (screenWidthPx * 0.8)) + screenWidthPx * 0.1);
         this.y = (int) (rnd.nextInt((int) (screenHeightPx * 0.6)) + screenHeightPx * 0.1);
 
-        this.mSpeed = 50;
+        this.mSpeed = enemySpeed;
 //        this.mSpeed = rnd.nextInt(12) + 4;
 
         this.width = enemyImage.getWidth(); // for accuracy
@@ -120,7 +120,7 @@ public class Enemy {
         return 2 * PI - angle;
     }
 
-    void explosion(Canvas c){
+    void explosion(Canvas c) {
         c.drawBitmap(enemyImage, x, y, null);
     }
 

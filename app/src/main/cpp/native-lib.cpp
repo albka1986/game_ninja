@@ -9,6 +9,6 @@ JNIEXPORT jstring JNICALL
 Java_com_ponomarenko_shootingRange_StartActivity_callNative(
         JNIEnv *env,
         jobject /* this */) {
-    std::string hello = "Hello from C++";
+    std::string hello = "C++";
     return env->NewStringUTF(hello.c_str());
 }
